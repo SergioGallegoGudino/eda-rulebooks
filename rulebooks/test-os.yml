@@ -6,8 +6,8 @@
       ansible.eda.range:
         limit: 10
   rules:
-    - name: Get OS Version
-      condition: event.meta is defined
+    - name: Detectar pod en estado de error
+      condition: event.resources | selectattr('status.phase', 'in', ['Failed', 'CrashLoopBackOff']) | list | length > 0
       action:
         run_job_template:
           name: os-test
