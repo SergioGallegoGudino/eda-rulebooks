@@ -1,0 +1,12 @@
+---
+- name: Monitor and Restart Failed Pods
+  hosts: localhost
+  sources:
+    - ansible.eda.generic:
+  rules:
+    - name: Detect failed pods and restart
+      condition: event.meta is defined
+      action:
+        run_job_template:
+          name: podrestart
+          organization: Default
