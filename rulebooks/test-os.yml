@@ -9,5 +9,6 @@
     - name: Get OS Version
       condition: event.meta is defined
       action:
-        run_playbook:
-          name: os-test
+        run_job_template:
+          name: set-resource-quota-on-namespace
+          organization: Default
