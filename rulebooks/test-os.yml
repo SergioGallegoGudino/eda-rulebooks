@@ -10,5 +10,5 @@
       condition: event.meta is defined
       action:
         run_job_template:
-          name: set-resource-quota-on-namespace
+          name: os-test
           organization: Default
