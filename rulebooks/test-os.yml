@@ -10,4 +10,4 @@
       condition: event.meta is defined
       action:
         run_playbook:
-          name: check_os_version.yml
+          name: os-test
