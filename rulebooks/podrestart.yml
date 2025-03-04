@@ -6,12 +6,12 @@
       ansible.eda.generic:
         module: kubernetes.core.k8s_info
         kind: Pod
-        namespace: "aap"  # Cambiar según el namespace deseado
+        namespace: "aap"  # Cambia esto según el namespace deseado
   rules:
     - name: Detectar pod en estado de error
-    condition: >
-      any(resource['status']['phase'] in ['Failed', 'CrashLoopBackOff'] for resource in event.resources)
-    action:
-      run_job_template:
-        name: os-test
-        organization: Default
+      condition: >
+        any(resource.status.phase in ['Failed', 'CrashLoopBackOff'] for resource in event.resources)
+      action:
+        run_job_template:
+          name: os-test
+          organization: Default
