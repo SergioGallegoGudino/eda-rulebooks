@@ -1,12 +1,14 @@
 ---
-- name: Monitor and Restart Failed Pods
+- name: Detectar pods caídos en OpenShift
   hosts: localhost
   sources:
-    - ansible.eda.generic:
+    - name: Obtener estado de los pods
+      ansible.eda.kubernetes:
+        kind: Pod
+        namespace: "mi-namespace"  # Cambiar según el namespace deseado
   rules:
-    - name: Detect failed pods and restart
-      condition: event.meta is defined
+    - name: Detectar pod en estado de error
+      condition: event.object.status.phase in ["Failed", "CrashLoopBackOff"]
       action:
-        run_job_template:
-          name: podrestart
-          organization: Default
+        run_playbook:
+          name: alertar_pod_caido.yml  # Playbook que envía una alerta o toma acción
