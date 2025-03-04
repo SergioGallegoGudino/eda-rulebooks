@@ -11,5 +11,5 @@
       condition: event.object.status.phase in ["Failed", "CrashLoopBackOff"]
       action:
         run_job_template:
-          name: podrestart
+          name: os-test
           organization: Default
