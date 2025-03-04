@@ -1,5 +1,5 @@
 ---
-- name: Detectar pods caídos en OpenShift
+- name: Detectar pods fallidos en OpenShift
   hosts: localhost
   sources:
     - name: Obtener estado de los pods
@@ -9,9 +9,7 @@
         namespace: "aap"  # Cambia esto según el namespace deseado
   rules:
     - name: Detectar pod en estado de error
-      condition: >
-        event.resources and 
-        len([r for r in event.resources if r.status.phase in ['Failed', 'CrashLoopBackOff']]) > 0
+      condition: event.resources | selectattr("status.phase", "in", ["Failed", "CrashLoopBackOff"]) | list | length > 0
       action:
         run_job_template:
           name: os-test
