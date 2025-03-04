@@ -1,15 +1,13 @@
 ---
-- name: Detectar pods fallidos en OpenShift
-  hosts: localhost
+- name: Kubernetes Pod Monitor
+  hosts: all
   sources:
-    - name: Obtener estado de los pods
-      ansible.eda.generic:
-        module: kubernetes.core.k8s_info
-        kind: Pod
-        namespace: "aap"  # Cambia esto según el namespace deseado
+    - ansible.eda.kubernetes:
+        namespace: aap  # Ajusta el namespace según tu necesidad
+        state: ["Failed", "CrashLoopBackOff"]
   rules:
-    - name: Detectar pod en estado de error
-      condition: event.resources | selectattr("status.phase", "in", ["Failed", "CrashLoopBackOff"]) | list | length > 0
+    - name: Detectar pods en estado crítico
+      condition: event.kubernetes.object.status.phase in ["Failed", "CrashLoopBackOff"]
       action:
         run_job_template:
           name: os-test
