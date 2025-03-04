@@ -9,9 +9,9 @@
         namespace: "aap"  # Cambiar según el namespace deseado
   rules:
     - name: Detectar pod en estado de error
-      condition: event.resources | selectattr('status.phase', 'in', ['Failed', 'CrashLoopBackOff']) | list | length > 0
-      action:
-        run_job_template:
-          name: os-test
-          organization: Default
-
+    condition: >
+      any(resource['status']['phase'] in ['Failed', 'CrashLoopBackOff'] for resource in event.resources)
+    action:
+      run_job_template:
+        name: os-test
+        organization: Default
