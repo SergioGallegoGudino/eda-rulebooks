@@ -3,13 +3,15 @@
   hosts: localhost
   sources:
     - name: Obtener estado de los pods
-      ansible.eda.kubernetes:
+      ansible.eda.generic:
+        module: kubernetes.core.k8s_info
         kind: Pod
         namespace: "mi-namespace"  # Cambiar según el namespace deseado
   rules:
     - name: Detectar pod en estado de error
-      condition: event.object.status.phase in ["Failed", "CrashLoopBackOff"]
+      condition: event.resources | selectattr('status.phase', 'in', ['Failed', 'CrashLoopBackOff']) | list | length > 0
       action:
         run_job_template:
           name: os-test
           organization: Default
+
