@@ -1,0 +1,13 @@
+---
+- name: Check OS Version Rulebook
+  hosts: localhost
+  sources:
+    - name: Listen for OS Check Requests
+      ansible.eda.range:
+        limit: 10
+  rules:
+    - name: Get OS Version
+      condition: event.meta is defined
+      action:
+        run_playbook:
+          name: check_os_version.yml
