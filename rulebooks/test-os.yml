@@ -13,9 +13,11 @@
       action:
         run_job_template:
           name: disponible
+          organization: Default
  
     - name: Página web caída
       condition: event.status != 200
       action:
         run_job_template:
           name: fallo
+          organization: Default
