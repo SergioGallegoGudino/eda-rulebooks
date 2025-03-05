@@ -8,14 +8,14 @@
  
   rules:
     - name: Página web disponible
-      condition: event.url_check.status_code == 200
+      condition: event.url_check.status == 'up'
       action:
         run_job_template:
           name: disponible
           organization: Default
  
     - name: Página web caída
-      condition: event.url_check.status_code != 200
+      condition: event.url_check.status == 'down'
       action:
         run_job_template:
           name: fallo
