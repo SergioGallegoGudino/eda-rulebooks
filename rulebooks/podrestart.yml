@@ -1,14 +1,15 @@
 ---
-- name: Kubernetes Pod Monitor
-  hosts: all
+- name: Monitorizar una URL y ejecutar un Job Template
+  hosts: localhost
   sources:
-    - ansible.eda.kubernetes:
-        namespace: aap  # Ajusta el namespace según tu necesidad
-        state: ["Failed", "CrashLoopBackOff"]
+    - ansible.eda.url_check:
+        urls:
+          - "192.168.6.70:32032"
+        delay: 10  # Comprobación cada 10 segundos
   rules:
-    - name: Detectar pods en estado crítico
-      condition: event.kubernetes.object.status.phase in ["Failed", "CrashLoopBackOff"]
+    - name: Ejecutar job si la URL responde con 200
+      condition: event.status == 200
       action:
         run_job_template:
-          name: os-test
-          organization: Default
+          name: "ip-test"
+          organization: "Default"
