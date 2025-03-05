@@ -5,7 +5,6 @@
     - ansible.eda.url_check:
         urls:
           - "http://192.168.6.70:32032/"
-        delay: 10  # Revisa cada 30 segundos
  
   rules:
     - name: Página web disponible
